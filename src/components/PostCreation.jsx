@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
-import { Image, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 
 const PostCreation = ({ user }) => {
 	const [content, setContent] = useState("");
@@ -45,16 +45,6 @@ const PostCreation = ({ user }) => {
 		setImagePreview(null);
 	};
 
-	const handleImageChange = (e) => {
-		const file = e.target.files[0];
-		setImage(file);
-		if (file) {
-			readFileAsDataURL(file).then(setImagePreview);
-		} else {
-			setImagePreview(null);
-		}
-	};
-
 	const readFileAsDataURL = (file) => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
@@ -67,7 +57,7 @@ const PostCreation = ({ user }) => {
 	return (
 		<div className='bg-secondary rounded-lg shadow mb-4 p-4'>
 			<div className='flex space-x-3'>
-				<img src={user.profilePicture || "/avatar.png"} alt={user.name} className='size-12 rounded-full' />
+				<img src={user?.profilePicture || "/avatar.png"} alt={user?.name} className='size-12 rounded-full' />
 				<textarea
 					placeholder="O que você está pensando?"
 					className='w-full p-3 rounded-lg bg-base-100 hover:bg-base-200 focus:bg-base-200 focus:outline-none resize-none transition-colors duration-200 min-h-[100px]'
@@ -82,15 +72,7 @@ const PostCreation = ({ user }) => {
 				</div>
 			)}
 
-			<div className='flex justify-between items-center mt-4'>
-				<div className='flex space-x-4'>
-					<label className='flex items-center text-info hover:text-info-dark transition-colors duration-200 cursor-pointer'>
-						<Image size={20} className='mr-2' />
-						<span>Foto</span>
-						<input type='file' accept='image/*' className='hidden' onChange={handleImageChange} />
-					</label>
-				</div>
-
+			<div className='flex justify-end items-center mt-4'>
 				<button
 					className='bg-primary text-white rounded-lg px-4 py-2 hover:bg-primary-dark transition-colors duration-200'
 					onClick={handlePostCreation}

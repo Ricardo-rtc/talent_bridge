@@ -4,7 +4,7 @@ import { axiosInstance } from "../lib/axios";
 import Sidebar from "../components/Sidebar";
 import Post from "../components/Post";
 
-const PostPage = () => {
+const OpeningsPage = () => {
 	const { postId } = useParams();
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
@@ -28,4 +28,4 @@ const PostPage = () => {
 		</div>
 	);
 };
-export default PostPage;
+export default OpeningsPage;

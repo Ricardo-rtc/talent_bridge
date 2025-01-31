@@ -3,25 +3,29 @@ import { useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
+	const [email, setUsername] = useState("");
+	const [senha, setPassword] = useState("");
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	const { mutate: loginMutation, isLoading } = useMutation({
-		mutationFn: (userData) => axiosInstance.post("/auth/login", userData),
+		mutationFn: (userData) => axiosInstance.post("/login", userData, { withCredentials: true }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+			navigate("/"); 
 		},
 		onError: (err) => {
-			toast.error(err.response.data.message || "Something went wrong");
+			console.log(err.response.data);
+			toast.error(err.response.data || "Algo deu errado. Tente novamente.");
 		},
 	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		loginMutation({ username, password });
+		loginMutation({ email, senha });
 	};
 
 	return (
@@ -29,7 +33,7 @@ const LoginForm = () => {
 			<input
 				type='text'
 				placeholder='Nome de usuário'
-				value={username}
+				value={email}
 				onChange={(e) => setUsername(e.target.value)}
 				className='input input-bordered w-full'
 				required
@@ -37,7 +41,7 @@ const LoginForm = () => {
 			<input
 				type='password'
 				placeholder='Senha'
-				value={password}
+				value={senha}
 				onChange={(e) => setPassword(e.target.value)}
 				className='input input-bordered w-full'
 				required
