@@ -30,13 +30,10 @@ const Navbar = () => {
 	const unreadConnectionRequestsCount = connectionRequests?.data?.length;
 
 	return (
-		<nav className='bg-secondary shadow-md sticky top-0 z-10'>
+		<nav className='bg-primary shadow-md sticky top-0 z-10'>
 			<div className='max-w-7xl mx-auto px-4'>
 				<div className='flex justify-between items-center py-3'>
 					<div className='flex items-center space-x-4'>
-						<Link to='/'>
-							<img className='h-8 rounded' src='/iconavgtb.svg' alt='Talent Bridge' />
-						</Link>
 					</div>
 					<div className='flex items-center gap-2 md:gap-6'>
 						{authUser ? (
@@ -86,10 +83,10 @@ const Navbar = () => {
 							</>
 						) : (
 							<>
-								<Link to='/login' className='btn btn-ghost'>
+								<Link to='/login' className='btn btn-ghost text-white'>
 									Entrar
 								</Link>
-								<Link to='/signup' className='btn btn-primary'>
+								<Link to='/signup' className='btn btn-primary text-white'>
 									Inscreva-se já
 								</Link>
 							</>

@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Bayon&display=swap&family=Roboto');
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --principal: #1F82BF;
+    --secundaria1: #1570BF;
+    --secundaria2: #002C65;
+}
+
+.container {
+    max-width: 90%; 
+    width: 100%; 
+    margin: 0 auto;
+    padding: 5px;
+}  
+
+body {
+    background-color: #ebeae6;
+}
+
+header {
+    background-color: var(--principal);
+    font-family: "Bayon", serif;
+    height: 5rem;
+}
+
+h1 {
+    color: #E2E2E2;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.header_content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header_content ul {
+    display: flex;
+    list-style: none;
+}
+
+.header_content li{
+    text-decoration: none;
+    display: inline-block;
+    margin: 20px;
+}
+
+.header_content a:link, .header_content a:visited{
+    color: #ebeae6;
+}
+
+.banner_home {
+    background: rgb(21,112,191);
+    background: linear-gradient(90deg, rgba(21,112,191,1) 0%, rgba(74,202,217,1) 100%);
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img_banner {
+    width: 45%;
+    object-fit: contain;
+}
+
+.box__atividades {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    height: 70vh;
+    border-radius: 18px;
+    gap: 3rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-family: "Bayon", serif;
+    color: var(--secundaria1);
+    font-weight: 500;
+    margin-top: 2rem;
+}
+
+.box__atividades-img {
+    margin-top: 2rem;
+    max-height: 490px;
+    object-fit: contain;
+}
+
+.box__atividades p{
+    font-family: 'Roboto';
+    margin-bottom: 3rem;
+    font-size: 28px;
+    word-break: break-word;
+}
+
+.box__atividades-button {
+    background-color: var(--secundaria1);
+    color: #fff;
+    text-transform: uppercase;
+    border: none;
+    /* padding: 1rem; */
+    border-radius: 13px;
+    width: 9em;
+    height: 3em;
+    font-size: 16px;
+    font-family: "Bayon", serif;
+}
+
+.box__atividades span:nth-child(2) {
+    margin: 1rem 0;
+    display: inline-block;
+}
+
+.box__atividades-conteudo {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: 7rem 0;
+}
+
+.box__info-candidato, .box__info-recrutador {
+    height: 200px;
+}
+
+h3 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-family: "Roboto";
+    color: #fff;
+    font-weight: 600;
+    margin-top: 2rem;
+}
+
+.box__info-candidato {
+    background-color: var(--secundaria2);
+}
+
+.box__info-recrutador {
+    background-color: var(--secundaria1);
+}
+
+.box__info-content ul {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 2rem;
+}
+
+.box__info-content li{
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
+    font-family: "Roboto";
+}
+
+footer {
+    background-color: var(--principal);
+    height: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer span {
+    color: #fff;
+    font-family: "Roboto";
+}

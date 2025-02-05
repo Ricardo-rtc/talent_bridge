@@ -15,7 +15,7 @@ const LoginForm = () => {
 		mutationFn: (userData) => axiosInstance.post("/login", userData, { withCredentials: true }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["authUser"] });
-			navigate("/"); 
+			navigate("/");
 		},
 		onError: (err) => {
 			console.log(err.response.data);
@@ -29,7 +29,12 @@ const LoginForm = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className='space-y-4 w-full max-w-md'>
+		<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+			<div className="text-black font-bold text-[36px] leading-[1.2] uppercase">
+				<p>BEM VINDO!</p>
+				<p>ACESSE SUA CONTA</p>
+			</div>
+
 			<input
 				type='text'
 				placeholder='Nome de usuário'
@@ -47,7 +52,7 @@ const LoginForm = () => {
 				required
 			/>
 
-			<button type='submit' className='btn btn-primary w-full'>
+			<button type='submit' className='btn btn-primary w-full text-white'>
 				{isLoading ? <Loader className='size-5 animate-spin' /> : "Login"}
 			</button>
 		</form>

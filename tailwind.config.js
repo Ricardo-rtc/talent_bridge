@@ -4,16 +4,20 @@ import daisyui from "daisyui";
 export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
-		extend: {},
+		extend: {
+			fontFamily: {
+				bayon: ["Bayon", "sans-serif"],
+			},
+		},
 	},
 	plugins: [daisyui],
 	daisyui: {
 		themes: [
 			{
 				talent: {
-					primary: "#0A66C2", 
+					primary: "#1F82BF",
 					secondary: "#FFFFFF", // White
-					accent: "#7FC15E", 
+					accent: "#7FC15E",
 					neutral: "#000000", // Black (for text)
 					"base-100": "#F3F2EF", // Light Gray (background)
 					info: "#5E5E5E", // Dark Gray (for secondary text)
