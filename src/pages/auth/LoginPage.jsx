@@ -3,7 +3,7 @@ import LoginForm from "../../components/auth/LoginForm";
 
 const LoginPage = () => {
 	return (
-		<div className='flex flex-col justify-center py-12 sm:px-6 lg:px-8 h-screen'>
+		<div className='flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
 			<div className='mt-8 sm:mx-auto sm:w-full sm:max-w-3xl shadow-lg rounded-3xl'>
 				<div className='bg-white py-8 px-4 sm:rounded-3xl sm:px-10'>
 					<LoginForm />
