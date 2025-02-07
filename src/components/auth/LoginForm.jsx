@@ -15,7 +15,7 @@ const LoginForm = () => {
 		mutationFn: (userData) => axiosInstance.post("/login", userData, { withCredentials: true }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["authUser"] });
-			navigate("/");
+			navigate("/home");
 		},
 		onError: (err) => {
 			console.log(err.response.data);
