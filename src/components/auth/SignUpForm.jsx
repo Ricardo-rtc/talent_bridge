@@ -255,6 +255,9 @@ const SignUpForm = () => {
 					<>
 						<InputMask mask="99.999.999/9999-99" {...register("cnpj", { required: "CNPJ é obrigatório" })} placeholder="CNPJ" className="input input-bordered w-full mt-2" />
 						{errors.cnpj && <span className="text-red-500">{errors.cnpj.message}</span>}
+
+						<input {...register("descricao", { required: "Descrição é obrigatório" })} placeholder="Descrição" className="input input-bordered w-full mt-2" />
+						{errors.descricao && <span className="text-red-500">{errors.descricao.message}</span>}
 					</>
 				)}
 				<div className="flex justify-between mt-4">
