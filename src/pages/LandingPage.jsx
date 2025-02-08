@@ -1,6 +1,6 @@
 // import Logo from "./src/img/logotb.svg";
-// import Banner from "./src/img/aperto-banner.svg";
-import { Link } from "lucide-react";
+// import Banner from "../img/banner.png";
+import { Link } from "react-router-dom";
 import "../styles/main.css";
 
 export default function Home() {
@@ -16,26 +16,26 @@ export default function Home() {
             <li><Link href="#">Saiba mais</Link></li>
             <li><Link href="#">Institucional</Link></li>
             <li><Link href="#">Fale conosco</Link></li>
-            <li><Link href="#">Login</Link></li>
+            <li><Link to="/login">Login</Link></li>
           </ul>
         </div>
       </header>
 
 
       <section className="banner_home">
-        {/* <Image className="img_banner" src={Logo} alt="Logo marca" /> */}
+        <img className="img_banner" src="/img/logotb.svg" alt="Logo marca" />
       </section>
 
 
       <section className="box__atividades container">
 
-        {/* <Image className="box__atividades-img" src={Banner} alt="Banner " /> */}
+        <img className="box__atividades-img" src="/img/aperto-banner.svg"  alt="Banner " />
 
         <div className="box__atividades-conteudo">
           <h2>Encontre seu match profissional</h2>
           <p>Com a TalentBridge, ficou mais fácil encontrar seu emprego ideal</p>
 
-          <button className="box__atividades-button">Acesse agora</button>
+          <Link to="/login" className="box__atividades-button">Acesse agora</Link>
         </div>
       </section>
 

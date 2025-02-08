@@ -11,16 +11,16 @@ const SignUpForm = () => {
 	const { register, handleSubmit, watch, formState: { errors }, trigger } = useForm();
 	const [currentStep, setCurrentStep] = useState(0);
 	const queryClient = useQueryClient();
+	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const category = watch("category", "0");
 
-	const { mutate: signUpMutation, isLoading } = useMutation({
+	const { mutate: signUpMutation } = useMutation({
 		mutationFn: async (formData) => {
 			const formattedData = new FormData();
 
 			Object.entries(formData).forEach(([key, value]) => {
-				console.log(key, value);
 				if (key === "cpf" || key === "cnpj" || key === "cep" || key === "NumContato") {
 					value = value.replace(/\D/g, "");
 				}
@@ -52,7 +52,8 @@ const SignUpForm = () => {
 	});
 
 	const onSubmit = (data) => {
-		signUpMutation(data);
+		setIsLoading(true);
+		signUpMutation(data, { onSettled: () => setIsLoading(false) });
 	};
 
 	const validateStep = async () => {

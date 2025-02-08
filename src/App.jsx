@@ -12,21 +12,25 @@ import LandingPage from "./pages/LandingPage";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-
+	// function isLogged() {
+	// 	return localStorage.getItem("tokenGerado") !== null;
+	// }
 	return (
-		<Layout>
-			<Routes>
-				<Route path='/login' element={<LoginPage />} />
-				<Route path='/home' element={<HomePage />} />
-				<Route path='/signup' element={<SignUpPage />} />
-				<Route path='/notifications' element={<NotificationsPage />} />
-				<Route path='/network' element={<NetworkPage />} />
-				<Route path='/OpeningsPage/:openingId' element={<OpeningsPage />} />
-				<Route path='/profile/:username' element={<ProfilePage />} />
-				<Route path='/' element={<LandingPage />} />
-			</Routes>
+		<>
 			<Toaster />
-		</Layout>
+			<Routes>
+				<Route path='/' element={<LandingPage />} />
+				<Route element={<Layout />}>
+					<Route path='/login' element={<LoginPage />} />
+					<Route path='/home' element={<HomePage />} />
+					<Route path='/signup' element={<SignUpPage />} />
+					<Route path='/notifications' element={<NotificationsPage />} />
+					<Route path='/network' element={<NetworkPage />} />
+					<Route path='/openings/:openingId' element={<OpeningsPage />} />
+					<Route path='/profile/:username' element={<ProfilePage />} />
+				</Route>
+			</Routes>
+		</>
 	);
 }
 

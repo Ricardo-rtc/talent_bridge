@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import toast from "react-hot-toast";
@@ -8,24 +8,28 @@ import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
 	const [email, setUsername] = useState("");
 	const [senha, setPassword] = useState("");
-	const queryClient = useQueryClient();
+	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 
-	const { mutate: loginMutation, isLoading } = useMutation({
+	const { mutate: loginMutation } = useMutation({
 		mutationFn: (userData) => axiosInstance.post("/login", userData, { withCredentials: true }),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+		onSuccess: (response) => {
+			localStorage.setItem("token", response.data.tokenGerado);
 			navigate("/home");
 		},
 		onError: (err) => {
-			console.log(err.response.data);
 			toast.error(err.response.data || "Algo deu errado. Tente novamente.");
 		},
 	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		loginMutation({ email, senha });
+		setIsLoading(true);
+		loginMutation({ email, senha },
+			{
+				onSettled: () => setIsLoading(false),
+			}
+		);
 	};
 
 	return (
