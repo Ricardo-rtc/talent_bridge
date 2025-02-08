@@ -1,8 +1,9 @@
 import { Briefcase, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "../utils/dateUtils";
+import api from "../utils/api";
 
-const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
+const ExperienceSection = ({ userData, onSave }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [experiences, setExperiences] = useState(userData.experience || []);
 	const [newExperience, setNewExperience] = useState({
@@ -14,24 +15,24 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 		currentlyWorking: false,
 	});
 
-	const handleAddExperience = () => {
-		if (newExperience.title && newExperience.company && newExperience.startDate) {
-			setExperiences([...experiences, newExperience]);
-
-			setNewExperience({
-				title: "",
-				company: "",
-				startDate: "",
-				endDate: "",
-				description: "",
-				currentlyWorking: false,
+	async function getExperience(cpf) {
+		try {
+			await api(`Experiencia/${cpf}`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem('token')}`,
+				}
+			}).then(resposta => {
+				if (resposta.status === 200) { // 🔹 Verifica se há dados válidos
+					console.log(resposta.data.$values);
+					setExperiences(resposta.data.$values);
+				}
 			});
-		}
-	};
 
-	const handleDeleteExperience = (id) => {
-		setExperiences(experiences.filter((exp) => exp._id !== id));
-	};
+
+		} catch (erro) {
+			console.error("Erro ao buscar vagas:", erro);
+		}
+	}
 
 	const handleSave = () => {
 		onSave({ experience: experiences });
@@ -46,10 +47,17 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 		});
 	};
 
+	// Garantindo que userData.cnpj não cause erro
+	useEffect(() => {
+		if (userData.cpf) { // 🔹 Verifica se userData e cnpj existem
+			getExperience(userData.cpf);
+		}
+	}, [userData.cpf]); // 🔹 Observa apenas userData.cnpj
+
 	return (
 		<div className='bg-white shadow rounded-lg p-6 mb-6'>
 			<h2 className='text-xl font-semibold mb-4'>Experiência</h2>
-			{experiences.map((exp) => (
+			{/* {experiences.map((exp) => (
 				<div key={exp._id} className='mb-4 flex justify-between items-start'>
 					<div className='flex items-start'>
 						<Briefcase size={20} className='mr-2 mt-1' />
@@ -68,7 +76,30 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 						</button>
 					)}
 				</div>
-			))}
+			))} */}
+
+			{experiences.length > 0 ? (
+				experiences.map((experiences) => (
+					<div className='list' key={experiences.idExperiencia}>
+						<hr></hr>
+						<div style={{ display: "flex", flexDirection: "column", margin: '0.5rem 0' }}>
+							<span style={{ fontSize: '1.5em' }} className="list__title">{experiences.titulo}</span>
+							<div >
+								<span className="list__title">Data início: {experiences.dataInicio}</span> - <span >Data Fim: {experiences.dataConclusao}</span>
+							</div>
+
+							<span style={{ margin: '0.5rem 0 ' }}>Modelo de trabalho: {experiences.modeloTrabalho}</span>
+
+							<div style={{ display: "flex", flexDirection: "column" }}>
+								<span >Descrição: </span>
+								<span>{experiences.descricao}</span>
+							</div>
+						</div>
+					</div>
+				))
+			) : (
+				<p className="text-gray-500">Nenhuma vaga disponível no momento.</p>
+			)}
 
 			{isEditing && (
 				<div className='mt-4'>
@@ -127,25 +158,24 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 				</div>
 			)}
 
-			{isOwnProfile && (
-				<>
-					{isEditing ? (
-						<button
-							onClick={handleSave}
-							className='mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
-						>
-							Salvar alterações
-						</button>
-					) : (
-						<button
-							onClick={() => setIsEditing(true)}
-							className='mt-4 text-primary hover:text-primary-dark transition duration-300'
-						>
-							Editar experiências
-						</button>
-					)}
-				</>
-			)}
+
+			{/* <>
+				{isEditing ? (
+					<button
+						onClick={handleSave}
+						className='mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
+					>
+						Salvar alterações
+					</button>
+				) : (
+					<button
+						onClick={() => setIsEditing(true)}
+						className='mt-4 text-primary hover:text-primary-dark transition duration-300'
+					>
+						Editar experiências
+					</button>
+				)}
+			</> */}
 		</div>
 	);
 };

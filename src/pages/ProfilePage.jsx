@@ -116,7 +116,7 @@ export default function ProfilePage() {
 		// Se for um candidato, adicionar os campos específicos
 		if (parseJwt().role === 'candidato') {
 			fullData.Cpf = userData.cpf;
-			fullData.DataNascimento = converterParaDataSQL(userData.dataNascimento);
+			fullData.DataNascimento = userData.dataNascimento;
 		} else {
 			fullData.CNPJ = userData.cnpj;
 			fullData.Descricao = userData.descricao;
@@ -142,6 +142,20 @@ export default function ProfilePage() {
 
 		if (parseJwt().role === 'empresa') {
 			await api.put('Empresa/', formData, {
+				headers: {
+					Authorization: 'Bearer ' + localStorage.getItem('token'),
+				}
+			}).then(resposta => {
+				if (resposta.status === 200) {
+					console.log(resposta.data)
+					buscarUsuario()
+				}
+			}).catch(erro => {
+				// Notiflix.Notify.failure('Ocorreu um erro, tente novamente mais tarde!')
+				console.log(erro)
+			})
+		} else {
+			await api.put('Candidato/', formData, {
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('token'),
 				}
