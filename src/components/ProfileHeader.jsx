@@ -79,10 +79,12 @@ const ProfileHeader = ({ userData, onSave }) => {
 				{parseJwt().role === 'candidato' ? (
 					<div className='flex justify-center items-center mt-2'>
 						<span className='text-gray-600'>Idade: {idade}</span>
+						<p className='text-gray-600'>CPF {userData.cpf}</p>
 					</div>
 				) : (
 					<div className='flex justify-center items-center mt-2'>
-						<p className='text-gray-600'>CNPJ {userData.cnpj}</p>
+						<p className='text-gray-600'>CNPJ: {userData.cnpj}</p>
+
 					</div>
 				)}
 
@@ -90,22 +92,24 @@ const ProfileHeader = ({ userData, onSave }) => {
 			</div>
 
 			{/* Botão de edição */}
-			{isEditing ? (
-				<button
-					className='w-full bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300'
-					onClick={handleSave}
-				>
-					Salvar alterações
-				</button>
-			) : (
-				<button
-					onClick={() => setIsEditing(true)}
-					className='w-full bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300'
-				>
-					Editar perfil
-				</button>
-			)}
-		</div>
+			{
+				isEditing ? (
+					<button
+						className='w-full bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300'
+						onClick={handleSave}
+					>
+						Salvar alterações
+					</button>
+				) : (
+					<button
+						onClick={() => setIsEditing(true)}
+						className='w-full bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300'
+					>
+						Editar perfil
+					</button>
+				)
+			}
+		</div >
 	);
 };
 
