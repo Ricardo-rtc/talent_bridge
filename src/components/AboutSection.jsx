@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-const AboutSection = ({ userData, isOwnProfile, onSave }) => {
+const AboutSection = ({ userData, onSave }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [about, setAbout] = useState({});
 
 	const handleSave = () => {
-		console.log(about.descricao)
 		setIsEditing(false);
 		onSave(about);
 	};

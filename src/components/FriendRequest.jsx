@@ -31,7 +31,7 @@ const FriendRequest = ({ request }) => {
 	return (
 		<div className='bg-white rounded-lg shadow p-4 flex items-center justify-between transition-all hover:shadow-md'>
 			<div className='flex items-center gap-4'>
-				<Link to={`/profile/${request.sender.username}`}>
+				<Link to={`/profile`}>
 					<img
 						src={request.sender.profilePicture || "/avatar.png"}
 						alt={request.name}
@@ -40,7 +40,7 @@ const FriendRequest = ({ request }) => {
 				</Link>
 
 				<div>
-					<Link to={`/profile/${request.sender.username}`} className='font-semibold text-lg'>
+					<Link to={`/profile`} className='font-semibold text-lg'>
 						{request.sender.name}
 					</Link>
 					<p className='text-gray-600'>{request.sender.headline}</p>

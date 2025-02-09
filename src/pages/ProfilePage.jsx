@@ -1,6 +1,6 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../lib/axios";
+import { useNavigate } from "react-router-dom";
+// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// import { axiosInstance } from "../lib/axios";
 
 import { parseJwt } from "../utils/auth";
 
@@ -9,22 +9,15 @@ import AboutSection from "../components/AboutSection";
 import ExperienceSection from "../components/ExperienceSection";
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
-import toast from "react-hot-toast";
 import api from "../utils/api";
 import { useEffect, useState } from "react";
-import { parse } from "date-fns";
 import GetJobs from "../components/GetJobs";
 
 import '../styles/modal.css';
 
 export default function ProfilePage() {
 	const [userData, setUserData] = useState({});
-
-	const queryClient = useQueryClient();
 	const [modal, setModal] = useState(false);
-	const [isEditing, setIsEditing] = useState(false);
-	const [editedData, setEditedData] = useState({});
-	const idLoading = true;
 	const navigate = useNavigate();
 
 	function buscarUsuario() {
@@ -35,11 +28,10 @@ export default function ProfilePage() {
 		}).then(resposta => {
 			if (resposta.status === 200) {
 				setUserData(resposta.data.$values[0])
-				console.log(resposta.data.$values[0])
 			}
 		}).catch(erro => {
 			// Notiflix.Notify.failure('Ocorreu um erro, tente novamente mais tarde!')
-			console.log(erro)
+			console.error(erro)
 		})
 	}
 
@@ -56,22 +48,20 @@ export default function ProfilePage() {
 			},
 		}).then(resposta => {
 			if (resposta.status === 200) {
-				console.log(resposta.data)
 				navigate("/login");
+				localStorage.removeItem("token");
 			}
 		}).catch(erro => {
 			// Notiflix.Notify.failure('Ocorreu um erro, tente novamente mais tarde!')
-			console.log(erro)
+			console.error(erro)
 		})
 	}
 
 	async function updateProfile(updatedData) {
 
-		function converterParaDataSQL(dataStr) {
-			return `${dataStr.slice(4, 8)}-${dataStr.slice(2, 4)}-${dataStr.slice(0, 2)}`;
-		}
-
-		console.log(updatedData)
+		// function converterParaDataSQL(dataStr) {
+		// 	return `${dataStr.slice(4, 8)}-${dataStr.slice(2, 4)}-${dataStr.slice(0, 2)}`;
+		// }
 
 		// Mapeamento de chaves erradas → corretas
 		const keyMap = {
@@ -137,7 +127,6 @@ export default function ProfilePage() {
 			formData.append(key, fullData[key]);
 		}
 
-		console.log("Dados enviados para API:", Object.fromEntries(formData.entries()));
 
 
 		if (parseJwt().role === 'empresa') {
@@ -147,12 +136,11 @@ export default function ProfilePage() {
 				}
 			}).then(resposta => {
 				if (resposta.status === 200) {
-					console.log(resposta.data)
 					buscarUsuario()
 				}
 			}).catch(erro => {
 				// Notiflix.Notify.failure('Ocorreu um erro, tente novamente mais tarde!')
-				console.log(erro)
+				console.error(erro)
 			})
 		} else {
 			await api.put('Candidato/', formData, {
@@ -161,12 +149,11 @@ export default function ProfilePage() {
 				}
 			}).then(resposta => {
 				if (resposta.status === 200) {
-					console.log(resposta.data)
 					buscarUsuario()
 				}
 			}).catch(erro => {
 				// Notiflix.Notify.failure('Ocorreu um erro, tente novamente mais tarde!')
-				console.log(erro)
+				console.error(erro)
 			})
 		}
 
@@ -185,20 +172,47 @@ export default function ProfilePage() {
 	return (
 		<div className='max-w-4xl mx-auto p-4'>
 			{modal && (
-				<div className="modal_profile" onClick={() => setModal(false)}>
-					<div className="modal-content" onClick={(e) => e.stopPropagation()}>
-						<span className="close" onClick={() => setModal(false)}>&times;</span>
-						<p>Tem certeza que deseja excluir o usuário?</p>
-						<div className="modal-buttons">
-							<button onClick={() => {
-								deleteUser()
-								setModal(false);
-							}}>Confirmar</button>
-							<button onClick={() => setModal(false)}>Cancelar</button>
+				<div
+					className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+					onClick={() => setModal(false)}
+				>
+					<div
+						className="bg-white rounded-lg shadow-lg p-6 w-80 max-w-full"
+						onClick={(e) => e.stopPropagation()}
+					>
+						<button
+							className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+							onClick={() => setModal(false)}
+						>
+							&times;
+						</button>
+						<h2 className="text-lg font-semibold font-[Arial] text-center mb-4">
+							Confirmação de Exclusão
+						</h2>
+						<p className="text-gray-700 text-center mb-6">
+							Tem certeza que deseja excluir o usuário?
+						</p>
+						<div className="flex justify-around">
+							<button
+								onClick={() => {
+									deleteUser();
+									setModal(false);
+								}}
+								className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
+							>
+								Confirmar
+							</button>
+							<button
+								onClick={() => setModal(false)}
+								className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-md"
+							>
+								Cancelar
+							</button>
 						</div>
 					</div>
 				</div>
 			)}
+
 			<ProfileHeader userData={userData} onSave={handleSave} />
 			{parseJwt().role === 'empresa' ? <AboutSection userData={userData} onSave={handleSave} /> : ''}
 			{parseJwt().role === 'empresa' ? <GetJobs userData={userData} /> : ''}
@@ -206,7 +220,7 @@ export default function ProfilePage() {
 			{parseJwt().role === 'candidato' ? <EducationSection userData={userData} onSave={handleSave} /> : ''}
 			{parseJwt().role === 'candidato' ? <SkillsSection userData={userData} onSave={handleSave} /> : ''}
 
-			<button onClick={() => setModal(true)}>Excluir usuário</button>
+			<button className="font-[Bayon] text-white uppercase text-2xl" onClick={() => setModal(true)}>Excluir usuário</button>
 
 		</div>
 	);

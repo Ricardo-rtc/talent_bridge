@@ -1,6 +1,4 @@
-import { Briefcase, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { formatDate } from "../utils/dateUtils";
 import api from "../utils/api";
 
 const ExperienceSection = ({ userData, onSave }) => {
@@ -23,7 +21,6 @@ const ExperienceSection = ({ userData, onSave }) => {
 				}
 			}).then(resposta => {
 				if (resposta.status === 200) { // 🔹 Verifica se há dados válidos
-					console.log(resposta.data.$values);
 					setExperiences(resposta.data.$values);
 				}
 			});
@@ -56,7 +53,7 @@ const ExperienceSection = ({ userData, onSave }) => {
 
 	return (
 		<div className='bg-white shadow rounded-lg p-6 mb-6'>
-			<h2 className='text-xl font-semibold mb-4'>Experiência</h2>
+			<h2 className='text-xl font-semibold mb-4'>Experiencia</h2>
 			{/* {experiences.map((exp) => (
 				<div key={exp._id} className='mb-4 flex justify-between items-start'>
 					<div className='flex items-start'>
