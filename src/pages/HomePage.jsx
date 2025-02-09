@@ -37,6 +37,7 @@ const HomePage = () => {
 				</div>
 				<div className="space-y-4">
 					{vagas?.map((job, index) => (
+						parseJwt().role === "candidato" ? job.disponivel === true ? <Openings key={index} data={job} jwt={parseJwt()} onEdit={reloadData} /> : "" :
 						<Openings key={index} data={job} jwt={parseJwt()} onEdit={reloadData} />
 					))}
 				</div>
