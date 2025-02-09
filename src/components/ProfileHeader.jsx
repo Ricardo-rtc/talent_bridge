@@ -47,10 +47,10 @@ const ProfileHeader = ({ userData, onSave }) => {
 						type='text'
 						value={editedData.name ?? userData.nome}
 						onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
-						className='text-2xl font-bold mb-2 text-center w-full'
+						className='text-2xl font-bold mb-2 text-center w-full '
 					/>
 				) : (
-					<h1 className='text-2xl font-bold mb-2'>{userData.nome}</h1>
+					<h1 className='text-2xl font-bold mb-2 text-gray-400'>{userData.nome}</h1>
 				)}
 
 				{isEditing ? (

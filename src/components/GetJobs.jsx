@@ -21,7 +21,6 @@ const GetJobs = ({ userData, onSave }) => {
             });
 
             if (resposta.status === 200 && resposta.data?.$values) { // 🔹 Verifica se há dados válidos
-                console.log(resposta.data.$values);
                 setVagaData(resposta.data.$values);
             } else {
                 console.warn("Nenhuma vaga encontrada.");

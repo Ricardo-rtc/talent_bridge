@@ -38,6 +38,7 @@ h1 {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    font-family: "Bayon", serif;
 }
 
 .header_content ul {
