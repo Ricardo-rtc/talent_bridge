@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios.js";
@@ -8,13 +8,14 @@ import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
-	const { register, handleSubmit, watch, formState: { errors }, trigger } = useForm();
+	const { register, handleSubmit, watch, setValue, formState: { errors }, trigger } = useForm();
 	const [currentStep, setCurrentStep] = useState(0);
 	const queryClient = useQueryClient();
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const category = watch("category", "0");
+
 
 	const { mutate: signUpMutation } = useMutation({
 		mutationFn: async (formData) => {
@@ -120,6 +121,42 @@ const SignUpForm = () => {
 			</>
 		)
 	}
+
+	const cepRef = useRef("");
+
+	useEffect(() => {
+		const subscription = watch((value, { name }) => {
+			if (name === "cep") {
+				const onlyNumbers = value.cep?.replace(/\D/g, "");
+				if (onlyNumbers?.length === 8 && onlyNumbers !== cepRef.current) {
+					cepRef.current = onlyNumbers;
+					fetch(`https://viacep.com.br/ws/${onlyNumbers}/json/`)
+						.then((res) => res.json())
+						.then((data) => {
+							if (!data.erro) {
+								setValue("logradouro", data.logradouro);
+								setValue("bairro", data.bairro);
+								setValue("cidade", data.localidade);
+								setValue("UF", data.uf);
+								setValue("pais", "Brasil");
+							}
+							if (data.erro) {
+								toast.error("CEP inválido");
+								setValue("cep", "");
+								setValue("logradouro", "");
+								setValue("bairro", "");
+								setValue("cidade", "");
+								setValue("UF", "");
+								setValue("pais", "");
+							}
+						})
+						.catch(() => console.error("Erro ao buscar o CEP"));
+				}
+			}
+		});
+
+		return () => subscription.unsubscribe();
+	}, [watch, setValue]);
 
 	const Address = () => {
 		return (

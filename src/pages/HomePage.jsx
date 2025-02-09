@@ -8,6 +8,10 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
 
 	const [vagas, setVagas] = useState([]);
+	const reloadData = () => {	
+		buscarVagas();
+	}
+
 
 	function buscarVagas() {
 		api.get('vagas').then(resposta => {
@@ -33,7 +37,7 @@ const HomePage = () => {
 				</div>
 				<div className="space-y-4">
 					{vagas?.map((job, index) => (
-						<Openings key={index} data={job} jwt={parseJwt()} />
+						<Openings key={index} data={job} jwt={parseJwt()} onEdit={reloadData} />
 					))}
 				</div>
 			</div>

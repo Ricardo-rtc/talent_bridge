@@ -5,8 +5,9 @@ import { axiosInstance } from "../lib/axios.js";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
+import dayjs from "dayjs";
 
-const OpeningForm = () => {
+const OpeningForm = ({userData}) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const queryClient = useQueryClient();
     const [isLoading, setIsLoading] = useState(false);
@@ -15,10 +16,12 @@ const OpeningForm = () => {
     const { mutate: signUpMutation } = useMutation({
         mutationFn: async (formData) => {
             const formattedData = new FormData();
-
+            formattedData.append('cnpj', userData.cnpj);
+            formattedData.append('disponivel', true);
+            formattedData.append('dataInicio', dayjs().format("YYYY-MM-DD"));
             Object.entries(formData).forEach(([key, value]) => {
                 if (value) {
-                    formattedData.append(`Vagas.${key}`, value);
+                    formattedData.append(key, value);
                 }
             });
 
@@ -27,8 +30,8 @@ const OpeningForm = () => {
             return res.data;
         },
         onSuccess: () => {
-            toast.success("Conta criada com sucesso");
-            navigate("/login");
+            toast.success("Vaga criada com sucesso");
+            navigate("/home");
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (err) => {
@@ -78,10 +81,10 @@ const OpeningForm = () => {
                 <option value="0" disabled>
                     Selecione a senioridade
                 </option>
-                <option value="Estágio">Estágio</option>
-                <option value="Junior">Junior</option>
-                <option value="Pleno">Pleno</option>
-                <option value="Sênior">Sênior</option>
+                <option value="es">Estágio</option>
+                <option value="jr">Junior</option>
+                <option value="pl">Pleno</option>
+                <option value="sr">Sênior</option>
             </select>
             {errors.senioridade && (
                 <span className="text-red-500 text-sm">{errors.senioridade.message}</span>
@@ -96,14 +99,9 @@ const OpeningForm = () => {
                 <span className="text-red-500 text-sm">{errors.descricao.message}</span>
             )}
 
-            <input
-                {...register("requisitos", { required: "Requisitos são obrigatórios" })}
-                placeholder="Informe os requisitos necessários para a vaga"
-                className="input input-bordered w-full mb-2"
-            />
-            {errors.requisitos && (
-                <span className="text-red-500 text-sm">{errors.requisitos.message}</span>
-            )}
+            <input type="date" {...register("dataFim", { required: "Data de finalização é obrigatório" })} min={dayjs().format("YYYY-MM-DD")}  placeholder="Data de finalização" className="input input-bordered w-full mt-2" />
+            {errors.dataFim && <span className="text-red-500">{errors.dataFim.message}</span>}
+
 
             <button type="submit" className="btn btn-primary w-full text-white">
                 {isLoading ? <Loader className='size-5 animate-spin' /> : "Cadastrar"}

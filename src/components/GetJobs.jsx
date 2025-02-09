@@ -1,9 +1,23 @@
 import { useEffect, useState } from "react";
 import api from "../utils/api";
 
-const GetJobs = ({ userData, onSave }) => {
-    const [isEditing, setIsEditing] = useState(false);
+const GetJobs = ({ userData }) => {
     const [vagaData, setVagaData] = useState([]); // 🔹 Inicializado como array
+
+    function getSeniority(tipo) {
+        switch (tipo) {
+            case "jr":
+                return "Júnior";
+            case "pl":
+                return "Pleno";
+            case "sr":
+                return "Sênior";
+            case "es":
+                return "Estagiário";
+            default:
+                return "Não especificado";
+        }
+    }
 
     // Garantindo que userData.cnpj não cause erro
     useEffect(() => {
@@ -41,14 +55,16 @@ const GetJobs = ({ userData, onSave }) => {
                         <hr></hr>
                         <div style={{ display: "flex", flexDirection: "column", margin: '0.5rem 0'}}>
                             <div style={{ fontSize: '1.5em' }}>
-                                <span className="list__title">{vaga.titulo}</span> - <span >{vaga.senioridade}</span>
+                                <span className="list__title font-bold">{vaga.titulo}</span> - <span className="font-bold" >{getSeniority(vaga.senioridade)}</span>
                             </div>
 
-                            <span style={{ margin: '0.5rem 0 ' }}>Modelo de trabalho: {vaga.modeloTrabalho}</span>
-
                             <div style={{ display: "flex", flexDirection: "column"}}>
-                                <span >Descrição: </span>
-                                <span>{vaga.descricao}</span>
+                                <span className="font-semibold" >Modelo de trabalho: </span>
+                                <span className="text-gray-500">{vaga.modeloTrabalho}</span>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column"}}>
+                                <span className="font-semibold" >Descrição: </span>
+                                <span className="text-gray-500">{vaga.descricao}</span>
                             </div>
                         </div>
                     </div>

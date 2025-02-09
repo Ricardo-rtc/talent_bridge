@@ -1,14 +1,17 @@
 import dayjs from "dayjs";
 import api from "../utils/api";
-const Openings = ({ data, jwt }) => {
+const Openings = ({ data, jwt, onEdit }) => {
   function desativarVaga() {
-    console.log(data)
-    api.patch(`/vagas/${data?.idVaga}`, {
-      ativa: false
-    }).then((res) => {
-      console.log(res);
-    }).catch((err) => {
+    api.patch(`/vagas/${data?.idVaga}`,{},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      }
+    ).catch((err) => {
       console.error(err);
+    }).finally(() => {
+      onEdit(true);
     });
   }
   return (
@@ -28,7 +31,7 @@ const Openings = ({ data, jwt }) => {
 
         <div className="mt-6">
           {jwt.email == data?.cnpjNavigation.idUsuarioNavigation.email ? (<button onClick={desativarVaga} className="bg-[#002B5B] text-white px-6 py-2 rounded text-sm font-medium hover:bg-[#003875] transition-colors">
-            DESATIVAR
+            {data?.disponivel === true ? "DESATIVAR" : "ATIVAR"}
           </button>) : ''}
           {jwt.role == "candidato" ? (<button className="bg-[#1570BF] text-white px-6 py-2 rounded text-sm font-medium hover:bg-[#003875] transition-colors">
             SE CANDIDATAR
